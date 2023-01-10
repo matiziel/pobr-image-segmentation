@@ -1,0 +1,14 @@
+//
+// Created by mateusz on 10.01.23.
+//
+
+#ifndef POBR_IMAGE_SEGMENTATION_MOMENTUMCOMPUTING_H
+#define POBR_IMAGE_SEGMENTATION_MOMENTUMCOMPUTING_H
+
+
+class MomentumComputing {
+
+};
+
+
+#endif //POBR_IMAGE_SEGMENTATION_MOMENTUMCOMPUTING_H
