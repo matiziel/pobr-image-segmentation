@@ -1,4 +1,0 @@
-/opt/clion-2022.3.1/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/opt/clion-2022.3.1/bin/ninja/linux/ninja -G Ninja -S /home/mateusz/Documents/Projects/C++/pobr-image-segmentation -B /home/mateusz/Documents/Projects/C++/pobr-image-segmentation/cmake-build-debug
--- Configuring done
--- Generating done
--- Build files have been written to: /home/mateusz/Documents/Projects/C++/pobr-image-segmentation/cmake-build-debug

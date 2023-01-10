@@ -1,3 +1,0 @@
-/home/mateusz/Documents/Projects/C++/pobr-image-segmentation/cmake-build-debug/CMakeFiles/pobr_image_segmentation.dir
-/home/mateusz/Documents/Projects/C++/pobr-image-segmentation/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/mateusz/Documents/Projects/C++/pobr-image-segmentation/cmake-build-debug/CMakeFiles/rebuild_cache.dir
