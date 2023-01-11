@@ -1,0 +1,9 @@
+# ninja log v5
+957	1107	1673390216565019511	pobr_image_segmentation	72b7c15ff90d1142
+0	25	1673472900216193340	build.ninja	8dce368a2f63f265
+1	957	1673390216417017924	CMakeFiles/pobr_image_segmentation.dir/MomentumComputing.cpp.o	aff80e58c2e87b3b
+0	1985	1673383910697141898	CMakeFiles/pobr_image_segmentation.dir/main.cpp.o	279cf53c478d1788
+7	2352	1673478120994934584	CMakeFiles/pobr_image_segmentation.dir/ImageProcessor.cpp.o	72094e20d0fe6287
+7	3835	1673478122478946532	CMakeFiles/pobr_image_segmentation.dir/main.cpp.o	279cf53c478d1788
+1	951	1673478214095641079	CMakeFiles/pobr_image_segmentation.dir/MomentumComputing.cpp.o	aff80e58c2e87b3b
+951	1157	1673478214299642536	pobr_image_segmentation	c55e3357e0b7fb3a
