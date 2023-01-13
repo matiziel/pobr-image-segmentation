@@ -41,7 +41,7 @@ public:
         cv::Mat_<cv::Vec3b> imageVector = image;
         for (int y = 0; y < image.rows; ++y)
             for (int x = 0; x < image.cols; ++x) {
-                if (ColourHLS::getColour(imageVector(y, x)) == colour) {
+                if (ColourHLS::GetColour(imageVector(y, x)) == colour) {
 
                     if (x > boundingBox.xMax)
                         boundingBox.xMax = x;

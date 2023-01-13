@@ -6,48 +6,45 @@
 #define POBR_IMAGE_SEGMENTATION_IMAGEPROCESSOR_H
 
 #include <string>
+#include <vector>
+#include <iostream>
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "ColourHLS.h"
+#include "Histogram.h"
+#include "Converter.h"
 
 class ImageProcessor {
 
 public:
-    ImageProcessor(const std::string outputDirectory) : outputDirectory(outputDirectory) {}
+    ImageProcessor(const std::string& inputDirectory, const std::string& outputDirectory)
+            : inputDirectory(inputDirectory), outputDirectory(outputDirectory) { }
 
     void ProcessImage(const std::string &fileName) {
-        cv::Mat rgbImage = cv::imread(fileName);
-        if (ValidateImage(rgbImage))
+        cv::Mat bgrImage = LoadImage(fileName);
+
+        if (!ValidateImage(bgrImage))
             return;
 
-        cv::Mat image;
-        cv::cvtColor(rgbImage, image, cv::COLOR_BGR2HLS);
+//        GammaCorrection(bgrImage, 1.1);
+        cv::Mat image = Converter::ConvertBGRToHLS(bgrImage);
 
+        Histogram::HistogramEqualization(image);
         Thresholding(image);
 
-
-        SaveProcessedImage(fileName, image);
+        SaveProcessedImage(fileName, Converter::ConvertHLSToBGR(image));
     }
 
 private:
+    const std::string inputDirectory;
     const std::string outputDirectory;
 
-    bool ValidateImage(const cv::Mat &image) {
-        return image.depth() != sizeof(uchar) && image.channels() == 3;
-    }
-
-    void Thresholding(const cv::Mat &image) {
-        cv::Mat_<cv::Vec3b> imageVector = image;
-        for (int y = 0; y < imageVector.rows; y++) {
-            for (int x = 0; x < imageVector.cols; x++) {
-
-            }
-        }
-    }
-
-    void SaveProcessedImage(const std::string &fileName, const cv::Mat &image) {
-        cv::imwrite(outputDirectory + fileName, image);
-    }
+    cv::Mat LoadImage(const std::string &fileName);
+    bool ValidateImage(const cv::Mat &image);
+    void GammaCorrection(cv::Mat &image, float gamma);
+    void Thresholding(cv::Mat &image);
+    void SaveProcessedImage(const std::string &fileName, const cv::Mat &image);
 };
 
 

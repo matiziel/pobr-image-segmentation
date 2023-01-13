@@ -15,59 +15,95 @@ public:
     int L;
     int S;
 
-    static ColourHLS GetBlack() {
-        ColourHLS colour;
-        colour.Black();
-        return colour;
+    static ColourHLS GetBlack() { return ColourHLS(0, 0, 0); }
+
+    static ColourHLS GetWhite() { return ColourHLS(180, 255, 255); }
+
+    static ColourHLS GetColour(const cv::Vec3b &pixel) { return ColourHLS(pixel[0], pixel[1], pixel[2]); }
+
+    static void SetColour(cv::Vec3b &pixel, ColourHLS colour) {
+        pixel[0] = colour.H;
+        pixel[1] = colour.L;
+        pixel[2] = colour.S;
     }
 
-    static ColourHLS GetWhite() {
-        ColourHLS colour;
-        colour.White();
-        return colour;
+    bool IsBlue() {
+        return *this >= BlueMin() && *this <= BlueMax();
     }
 
-    static ColourHLS GetColour(const cv::Vec3b &pixel) {
-        ColourHLS colour;
-        colour.H = pixel[0];
-        colour.L = pixel[1];
-        colour.S = pixel[2];
-        return colour;
+    bool IsRed() {
+        return (*this >= RedMinLow() && *this <= RedMaxLow()) ||
+               (*this >= RedMinHigh() && *this <= RedMaxHigh());
     }
 
-    bool IsBlue(const cv::Vec3b &pixel) {
-        return false;
-    }
-
-    bool IsYellow(const cv::Vec3b &pixel) {
-        return false;
-    }
-
-    bool IsRed(const cv::Vec3b &pixel) {
-        return false;
+    bool IsWhite() {
+        return *this == GetWhite();
     }
 
     bool operator==(const ColourHLS &colour) {
-        if (H == colour.H && L == colour.L && S == colour.S)
-            return true;
-        return false;
+        return H == colour.H && L == colour.L && S == colour.S;
     }
 
     bool operator!=(const ColourHLS &colour) {
         return !(*this == colour);
     }
 
-private:
-    void Black() {
-        H = 0;
-        L = 0;
-        S = 0;
+    bool operator>(const ColourHLS &colour) {
+        return this->H > colour.H &&
+               this->L > colour.L &&
+               this->S > colour.S;
     }
 
-    void White() {
-        H = 255;
-        L = 255;
-        S = 255;
+    bool operator>=(const ColourHLS &colour) {
+        return this->H >= colour.H &&
+               this->L >= colour.L &&
+               this->S >= colour.S;
+    }
+
+    bool operator<(const ColourHLS &colour) {
+        return this->H < colour.H &&
+               this->L < colour.L &&
+               this->S < colour.S;
+    }
+
+    bool operator<=(const ColourHLS &colour) {
+        return this->H <= colour.H &&
+               this->L <= colour.L &&
+               this->S <= colour.S;
+    }
+
+private:
+
+    ColourHLS() {}
+
+    ColourHLS(int h, int l, int s) {
+        H = h;
+        L = l;
+        S = s;
+    }
+
+    static ColourHLS BlueMin() {
+        return ColourHLS(70, 25, 40);
+    }
+
+    static ColourHLS BlueMax() {
+        return ColourHLS(130, 240, 255);
+    }
+
+    static ColourHLS RedMinLow() {
+        return ColourHLS(0, 25, 40);
+    }
+
+    static ColourHLS RedMaxLow() {
+        return ColourHLS(8, 240, 255);
+    }
+
+    static ColourHLS RedMinHigh() {
+        return ColourHLS(165, 25, 40);
+    }
+
+    static ColourHLS RedMaxHigh() {
+        return ColourHLS(180, 240, 255);
     }
 };
 

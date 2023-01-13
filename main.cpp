@@ -4,16 +4,19 @@
 
 int main(int argc, char **argv) {
     std::string inputImages[6] = {
-            "Data/lidl_1.jpg",
-            "Data/lidl_2.jpg",
-            "Data/lidl_3.jpg",
-            "Data/lidl_4.jpg",
-            "Data/lidl_5.jpg",
-            "Data/lidl_6.jpg"
+            "lidl_1.png",
+            "lidl_2.png",
+            "lidl_3.png",
+            "lidl_4.png",
+            "lidl_5.png",
+            "lidl_6.png"
     };
-    std::string outputDirectory = "Output";
 
-    ImageProcessor imageProcessor(outputDirectory);
+//    std::string inputImages[1] = {
+//            "lidl_6_1.png"
+//    };
+
+    ImageProcessor imageProcessor("../Data/", "../Output/");
     for (auto image : inputImages) {
         imageProcessor.ProcessImage(image);
     }
