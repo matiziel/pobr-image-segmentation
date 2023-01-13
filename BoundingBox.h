@@ -23,7 +23,7 @@ public:
         this->yMax = yMax;
     }
 
-    cv::Mat GetBoundingImage(cv::Mat& image) {
+    cv::Mat GetBoundingImage(cv::Mat &image) {
         return image(cv::Rect(xMin, yMin, GetWidth(), GetHeight()));
     }
 
@@ -35,7 +35,7 @@ public:
         return yMax - yMin;
     }
 
-    static BoundingBox GetBoundingBoxFromImage(cv::Mat& image, ColourHLS colour) {
+    static BoundingBox GetBoundingBoxFromImage(cv::Mat &image, ColourHLS colour) {
         BoundingBox boundingBox = BoundingBox(image.rows, 0, image.cols, 0);
 
         cv::Mat_<cv::Vec3b> imageVector = image;
