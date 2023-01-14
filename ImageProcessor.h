@@ -6,6 +6,7 @@
 #define POBR_IMAGE_SEGMENTATION_IMAGEPROCESSOR_H
 
 #include <string>
+#include <utility>
 #include <vector>
 #include <iostream>
 #include "opencv2/core/core.hpp"
@@ -14,12 +15,13 @@
 #include "ColourHLS.h"
 #include "Histogram.h"
 #include "Converter.h"
+#include "Segmentation.h"
 
 class ImageProcessor {
 
 public:
-    ImageProcessor(const std::string& inputDirectory, const std::string& outputDirectory)
-            : inputDirectory(inputDirectory), outputDirectory(outputDirectory) { }
+    ImageProcessor(std::string inputDirectory, std::string outputDirectory)
+            : inputDirectory(std::move(inputDirectory)), outputDirectory(std::move(outputDirectory)) { }
 
     void ProcessImage(const std::string &fileName) {
         cv::Mat bgrImage = LoadImage(fileName);
@@ -30,8 +32,9 @@ public:
 //        GammaCorrection(bgrImage, 1.1);
         cv::Mat image = Converter::ConvertBGRToHLS(bgrImage);
 
-        Histogram::HistogramEqualization(image);
+//        Histogram::HistogramEqualization(image);
         Thresholding(image);
+        std::vector<Segment> segments = Segmentation::FindSegments(image);
 
         SaveProcessedImage(fileName, Converter::ConvertHLSToBGR(image));
     }

@@ -14,7 +14,10 @@
 class Segment {
 public:
     double M1, M2, M3, M7;
-    ColourHLS colour;
+    const ColourHLS colour;
+
+    Segment(const std::vector<cv::Point2i> &pixels, const ColourHLS &colour)
+            : pixels(pixels), colour(colour) {}
 
     void Init() {
         m00 = m(0, 0);
@@ -43,12 +46,12 @@ public:
 
         M1 = (M02 + M20) / std::pow(m00, 2);
         M2 = (std::pow(M20 - M02, 2) + 4 * M11 * M11) / std::pow(m00, 4);
-        M3 = (std::pow(M30 - 3 * M12, 2)  + std::pow(3 * M21 - M03, 2)) / pow(m00, 5);
+        M3 = (std::pow(M30 - 3 * M12, 2) + std::pow(3 * M21 - M03, 2)) / pow(m00, 5);
         M7 = (M02 * M20 - M11 * M11) / pow(m00, 4);
     }
 
 private:
-    std::vector<cv::Point2i> pixels;
+    const std::vector<cv::Point2i> pixels;
 
     double m00;
     double m10, m20, m30;

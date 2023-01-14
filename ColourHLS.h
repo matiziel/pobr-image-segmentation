@@ -15,6 +15,19 @@ public:
     int L;
     int S;
 
+    ColourHLS() {}
+
+    ColourHLS(int h, int l, int s) {
+        H = h;
+        L = l;
+        S = s;
+    }
+
+    static int MaxH() { return 180; }
+    static int MaxL() { return 255; }
+    static int MaxS() { return 255; }
+
+
     static ColourHLS GetBlack() { return ColourHLS(0, 0, 0); }
 
     static ColourHLS GetWhite() { return ColourHLS(180, 255, 255); }
@@ -73,14 +86,6 @@ public:
     }
 
 private:
-
-    ColourHLS() {}
-
-    ColourHLS(int h, int l, int s) {
-        H = h;
-        L = l;
-        S = s;
-    }
 
     static ColourHLS BlueMin() {
         return ColourHLS(70, 25, 40);
