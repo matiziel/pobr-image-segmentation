@@ -21,6 +21,7 @@ void ImageProcessor::GammaCorrection(cv::Mat &image, float gamma) {
             }
         }
     }
+    image = imageVector;
 }
 
 void ImageProcessor::Thresholding(cv::Mat &image) {

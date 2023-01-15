@@ -10,6 +10,7 @@
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "BoundingBox.h"
 
 class Segment {
 public:
@@ -49,6 +50,34 @@ public:
         M3 = (std::pow(M30 - 3 * M12, 2) + std::pow(3 * M21 - M03, 2)) / pow(m00, 5);
         M7 = (M02 * M20 - M11 * M11) / pow(m00, 4);
     }
+
+    double Area() {
+        return m00;
+    }
+
+    std::vector<cv::Point2i> GetPixels() const {
+        return pixels;
+    }
+
+    BoundingBox GetBoundingBox() const {
+        auto xComparator =
+                [](const cv::Point2i &l, const cv::Point2i &r) {
+                    return l.x < r.x;
+                };
+
+        auto yComparator =
+                [](const cv::Point2i &l, const cv::Point2i &r) {
+                    return l.y < r.y;
+                };
+
+        auto xMin = std::min_element(pixels.cbegin(), pixels.cend(), xComparator);
+        auto xMax = std::max_element(pixels.cbegin(), pixels.cend(), xComparator);
+        auto yMin = std::min_element(pixels.cbegin(),pixels.cend(),yComparator);
+        auto yMax = std::max_element(pixels.cbegin(), pixels.cend(),yComparator);
+
+        return BoundingBox((*xMin).x, (*xMax).x, (*yMin).y, (*yMax).y);
+    }
+
 
 private:
     const std::vector<cv::Point2i> pixels;

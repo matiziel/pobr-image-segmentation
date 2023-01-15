@@ -10,20 +10,27 @@
 
 class ColourProvider {
 public:
-    ColourProvider() : colour(0, 0, 0) {}
+    ColourProvider() : colour(180, 255, 255) {}
 
     ColourHLS GetColour() {
-        if (colour.H < ColourHLS::MaxH() - 1)
-            colour.H++;
-        else if (colour.L < ColourHLS::MaxL())
-            colour.L++;
-        else if (colour.L < ColourHLS::MaxS())
-            colour.S++;
+        if (colour.S > 0) {
+            colour.S--;
+        }
+        else if (colour.L > 0) {
+            colour.L--;
+            colour.S = 255;
+        }
+        else if (colour.H > 1) {
+            colour.H--;
+            colour.L = 255;
+            colour.S = 255;
+        }
         else
             throw std::out_of_range("End of colour range");
 
         return colour;
     }
+
 
 private:
     ColourHLS colour;

@@ -32,7 +32,7 @@ public:
 //        GammaCorrection(bgrImage, 1.1);
         cv::Mat image = Converter::ConvertBGRToHLS(bgrImage);
 
-//        Histogram::HistogramEqualization(image);
+        Histogram::HistogramEqualization(image);
         Thresholding(image);
         std::vector<Segment> segments = Segmentation::FindSegments(image);
 

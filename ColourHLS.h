@@ -32,6 +32,8 @@ public:
 
     static ColourHLS GetWhite() { return ColourHLS(180, 255, 255); }
 
+    static ColourHLS GetRed() { return ColourHLS(0, 128, 255); }
+
     static ColourHLS GetColour(const cv::Vec3b &pixel) { return ColourHLS(pixel[0], pixel[1], pixel[2]); }
 
     static void SetColour(cv::Vec3b &pixel, ColourHLS colour) {

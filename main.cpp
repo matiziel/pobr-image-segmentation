@@ -16,8 +16,8 @@ int main(int argc, char **argv) {
 //            "lidl_6_1.png"
 //    };
 
-    ImageProcessor imageProcessor("../Data_copy/", "../Output/");
-//    ImageProcessor imageProcessor("../Data/", "../Output/");
+//    ImageProcessor imageProcessor("../Data_copy/", "../Output/");
+    ImageProcessor imageProcessor("../Data/", "../Output/");
     for (auto image : inputImages) {
         imageProcessor.ProcessImage(image);
     }

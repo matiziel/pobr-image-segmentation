@@ -15,36 +15,50 @@
 #include "ColourHLS.h"
 #include "Segment.h"
 #include "ColourProvider.h"
+#include "BoundingBox.h"
 
 class Segmentation {
 public:
-    static std::vector<Segment> FindSegments(const cv::Mat &image) {
+
+    static std::vector<Segment> FindSegments(cv::Mat &image) {
         ColourProvider colourProvider;
         std::vector<Segment> segments;
 
         cv::Mat_<cv::Vec3b> imageVector = image;
         for (int y = 0; y < imageVector.rows; y++) {
             for (int x = 0; x < imageVector.cols; x++) {
-                if (ColourHLS::GetColour(imageVector(y, x)).IsWhite()) {
-                    segments.push_back(FloodFill(image, x, y, colourProvider.GetColour()));
+                if (!ColourHLS::GetColour(imageVector(y, x)).IsWhite())
+                    continue;
+
+                ColourHLS colour = colourProvider.GetColour();
+                Segment segment = FloodFill(image, x, y, colour);
+
+                if (segment.Area() < 32) {
+                    SetSegmentBlack(image, segment);
+                }
+                else {
+                    segments.push_back(segment);
+//                    BoundingBox::DrawBoundingBox(image, ColourHLS::GetRed(), segment.GetBoundingBox());
                 }
             }
         }
+        image = imageVector;
         return segments;
     }
 
 private:
-    static Segment FloodFill(const cv::Mat &image, int xStart, int yStart, ColourHLS colour) {
+    static Segment FloodFill(cv::Mat &image, int xStart, int yStart, ColourHLS colour) {
         std::vector<cv::Point2i> segmentPixels;
         std::deque<cv::Point2i> pixels;
         pixels.push_back(cv::Point2i(xStart, yStart));
 
         cv::Mat_<cv::Vec3b> imageVector = image;
-        ColourHLS::SetColour(imageVector(yStart, xStart), colour);
+
 
         while (!pixels.empty()) {
             auto current = pixels.front();
             pixels.pop_front();
+            ColourHLS::SetColour(imageVector(current.y, current.x), colour);
 
             segmentPixels.push_back(current);
 
@@ -59,7 +73,7 @@ private:
                 }
             }
         }
-
+        image = imageVector;
         auto segment = Segment(segmentPixels, colour);
         segment.Init();
         return segment;
@@ -85,6 +99,13 @@ private:
                 [&](cv::Point2i p) {
                     return p.x == point.x && p.y == point.y;
                 });
+    }
+
+    static void SetSegmentBlack(cv::Mat &image, Segment segment) {
+        cv::Mat_<cv::Vec3b> imageVector = image;
+        for (cv::Point2i pixel: segment.GetPixels())
+            ColourHLS::SetColour(imageVector(pixel.y, pixel.x), ColourHLS::GetBlack());
+        image = imageVector;
     }
 };
 

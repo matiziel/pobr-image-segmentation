@@ -5,9 +5,12 @@
 #ifndef POBR_IMAGE_SEGMENTATION_BOUNDINGBOX_H
 #define POBR_IMAGE_SEGMENTATION_BOUNDINGBOX_H
 
+#include <algorithm>
+#include <vector>
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "ColourHLS.h"
+#include "Segment.h"
 
 class BoundingBox {
 public:
@@ -35,29 +38,18 @@ public:
         return yMax - yMin;
     }
 
-    static BoundingBox GetBoundingBoxFromImage(cv::Mat &image, ColourHLS colour) {
-        BoundingBox boundingBox = BoundingBox(image.rows, 0, image.cols, 0);
-
+    static void DrawBoundingBox(cv::Mat &image, ColourHLS colour, BoundingBox boundingBox) {
         cv::Mat_<cv::Vec3b> imageVector = image;
-        for (int y = 0; y < image.rows; ++y)
-            for (int x = 0; x < image.cols; ++x) {
-                if (ColourHLS::GetColour(imageVector(y, x)) == colour) {
+        for (int x = boundingBox.xMin; x <= boundingBox.xMax; x++) {
+            ColourHLS::SetColour(imageVector(boundingBox.yMin, x), colour);
+            ColourHLS::SetColour(imageVector(boundingBox.yMax, x), colour);
+        }
 
-                    if (x > boundingBox.xMax)
-                        boundingBox.xMax = x;
-
-                    if (x < boundingBox.xMin)
-                        boundingBox.xMin = x;
-
-                    if (y > boundingBox.yMax)
-                        boundingBox.yMax = y;
-
-                    if (y < boundingBox.yMin)
-                        boundingBox.yMax = y;
-                }
-            }
+        for (int y = boundingBox.yMin; y <= boundingBox.yMax; y++) {
+            ColourHLS::SetColour(imageVector(y, boundingBox.xMin), colour);
+            ColourHLS::SetColour(imageVector(y, boundingBox.xMax), colour);
+        }
         image = imageVector;
-        return boundingBox;
     }
 };
 

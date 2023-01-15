@@ -17,6 +17,7 @@ void Histogram::HistogramEqualization(cv::Mat &image) {
             imageVector(y, x)[ChanelHLS::L] = Normalize(value);
         }
     }
+    image = imageVector;
 }
 
 std::vector<double> Histogram::GetHistogram(const cv::Mat &image) {
