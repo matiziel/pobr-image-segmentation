@@ -7,7 +7,6 @@
 
 #include "ColourHLS.h"
 
-
 class ColourProvider {
 public:
     ColourProvider() : colour(180, 255, 255) {}
@@ -15,17 +14,14 @@ public:
     ColourHLS GetColour() {
         if (colour.S > 0) {
             colour.S--;
-        }
-        else if (colour.L > 0) {
+        } else if (colour.L > 0) {
             colour.L--;
             colour.S = 255;
-        }
-        else if (colour.H > 1) {
+        } else if (colour.H > 1) {
             colour.H--;
             colour.L = 255;
             colour.S = 255;
-        }
-        else
+        } else
             throw std::out_of_range("End of colour range");
 
         return colour;
@@ -35,6 +31,5 @@ public:
 private:
     ColourHLS colour;
 };
-
 
 #endif //POBR_IMAGE_SEGMENTATION_COLOURPROVIDER_H

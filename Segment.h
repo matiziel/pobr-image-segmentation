@@ -5,20 +5,24 @@
 #ifndef POBR_IMAGE_SEGMENTATION_SEGMENT_H
 #define POBR_IMAGE_SEGMENTATION_SEGMENT_H
 
-
+#include <iterator>
+#include <vector>
+#include <cmath>
 #include "ColourHLS.h"
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "BoundingBox.h"
+#include "Config.h"
 
 class Segment {
 public:
-    double M1, M2, M3, M7;
+    double M1, M2, M3, M4, M7;
     const ColourHLS colour;
+    const Config config;
 
     Segment(const std::vector<cv::Point2i> &pixels, const ColourHLS &colour)
-            : pixels(pixels), colour(colour) {}
+            : pixels(pixels), colour(colour), config() {}
 
     void Init() {
         m00 = m(0, 0);
@@ -48,6 +52,7 @@ public:
         M1 = (M02 + M20) / std::pow(m00, 2);
         M2 = (std::pow(M20 - M02, 2) + 4 * M11 * M11) / std::pow(m00, 4);
         M3 = (std::pow(M30 - 3 * M12, 2) + std::pow(3 * M21 - M03, 2)) / pow(m00, 5);
+        M4 = (std::pow(M30 - M12, 2) + std::pow(M21 - M03, 2)) / pow(m00, 5);
         M7 = (M02 * M20 - M11 * M11) / pow(m00, 4);
     }
 
@@ -72,12 +77,87 @@ public:
 
         auto xMin = std::min_element(pixels.cbegin(), pixels.cend(), xComparator);
         auto xMax = std::max_element(pixels.cbegin(), pixels.cend(), xComparator);
-        auto yMin = std::min_element(pixels.cbegin(),pixels.cend(),yComparator);
-        auto yMax = std::max_element(pixels.cbegin(), pixels.cend(),yComparator);
+        auto yMin = std::min_element(pixels.cbegin(), pixels.cend(), yComparator);
+        auto yMax = std::max_element(pixels.cbegin(), pixels.cend(), yComparator);
 
         return BoundingBox((*xMin).x, (*xMax).x, (*yMin).y, (*yMax).y);
     }
 
+    Segment Merge(const Segment &segment) {
+        std::vector<cv::Point2i> mergedPixels;
+        mergedPixels.insert(mergedPixels.end(), pixels.begin(), pixels.end());
+        mergedPixels.insert(mergedPixels.end(), segment.pixels.begin(), segment.pixels.end());
+
+        Segment mergedSegments = Segment(mergedPixels, colour);
+        mergedSegments.Init();
+        return mergedSegments;
+    }
+
+    static bool ArePartOfLogo(const Segment &first, const Segment &second) {
+        const auto firstBox = first.GetBoundingBox();
+        const auto secondBox = second.GetBoundingBox();
+
+        const auto firstCenter = firstBox.GetCenterPoint();
+        const auto secondCenter = secondBox.GetCenterPoint();
+
+        return
+                static_cast<double>(std::abs(firstCenter.y - secondCenter.y)) <
+                3.5 * static_cast<double>(firstBox.GetHeight() + secondBox.GetHeight()) / 2.0 &&
+                static_cast<double>(std::abs(firstCenter.x - secondCenter.x)) <
+                3.5 * static_cast<double>(firstBox.GetWidth() + secondBox.GetWidth()) / 2.0;
+    }
+
+    bool IsLetterL() const {
+        return M1 > config.L.M1Min &&
+               M1 < config.L.M1Max &&
+               M7 > config.L.M7Min &&
+               M7 < config.L.M7Max &&
+               M2 < config.L.M2Max;
+    }
+
+    bool IsLetterI() const {
+        return M1 > config.I.M1Min &&
+               M1 < config.I.M1Max &&
+               M2 > config.I.M2Min &&
+               M2 < config.I.M2Max &&
+               M7 > config.I.M7Min &&
+               M7 < config.I.M7Max;
+    }
+
+    bool IsLetterD() const {
+        return M1 > config.D.M1Min &&
+               M1 < config.D.M1Max &&
+               M2 < config.D.M2Max &&
+               M7 > config.D.M7Min &&
+               M7 < config.D.M7Max;
+    }
+
+    bool IsWordLI() const {
+        return M1 > config.LI.M1Min &&
+               M1 < config.LI.M1Max &&
+               M7 > config.LI.M7Min &&
+               M7 < config.LI.M7Max &&
+               M2 > config.LI.M2Min &&
+               M2 < config.LI.M2Max;
+    }
+
+    bool IsWordID() const {
+        return M1 > config.ID.M1Min &&
+               M1 < config.ID.M1Max &&
+               M7 > config.ID.M7Min &&
+               M7 < config.ID.M7Max &&
+               M2 > config.ID.M2Min &&
+               M2 < config.ID.M2Max;
+    }
+
+    bool IsWordLID() const {
+        return M1 > config.LID.M1Min &&
+               M1 < config.LID.M1Max &&
+               M7 > config.LID.M7Min &&
+               M7 < config.LID.M7Max &&
+               M2 > config.LID.M2Min &&
+               M2 < config.LID.M2Max;
+    }
 
 private:
     const std::vector<cv::Point2i> pixels;

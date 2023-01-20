@@ -33,12 +33,13 @@ public:
                 ColourHLS colour = colourProvider.GetColour();
                 Segment segment = FloodFill(image, x, y, colour);
 
-                if (segment.Area() < 32) {
+                if (segment.Area() < 32
+//                || (segment.IsLetterI() || segment.IsLetterL())
+//                        || !segment.IsLetterD()
+                ) {
                     SetSegmentBlack(image, segment);
-                }
-                else {
+                } else {
                     segments.push_back(segment);
-//                    BoundingBox::DrawBoundingBox(image, ColourHLS::GetRed(), segment.GetBoundingBox());
                 }
             }
         }
@@ -53,7 +54,6 @@ private:
         pixels.push_back(cv::Point2i(xStart, yStart));
 
         cv::Mat_<cv::Vec3b> imageVector = image;
-
 
         while (!pixels.empty()) {
             auto current = pixels.front();
@@ -108,6 +108,5 @@ private:
         image = imageVector;
     }
 };
-
 
 #endif //POBR_IMAGE_SEGMENTATION_SEGMENTATION_H

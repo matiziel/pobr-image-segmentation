@@ -5,7 +5,6 @@
 #ifndef POBR_IMAGE_SEGMENTATION_UTILS_H
 #define POBR_IMAGE_SEGMENTATION_UTILS_H
 
-
 enum ChanelHLS {
     H = 0, L = 1, S = 2
 };

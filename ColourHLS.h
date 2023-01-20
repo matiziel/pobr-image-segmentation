@@ -24,7 +24,9 @@ public:
     }
 
     static int MaxH() { return 180; }
+
     static int MaxL() { return 255; }
+
     static int MaxS() { return 255; }
 
 

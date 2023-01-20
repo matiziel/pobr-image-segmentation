@@ -13,16 +13,18 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "Utils.h"
 
-
 class Histogram {
 public:
     static void HistogramEqualization(cv::Mat &image);
+
 private:
     const static int histogramSize = 256;
+
     static std::vector<double> GetHistogram(const cv::Mat &image);
+
     static std::vector<double> GetCDF(const std::vector<double> &histogram);
+
     static int Normalize(int value);
 };
-
 
 #endif //POBR_IMAGE_SEGMENTATION_HISTOGRAM_H

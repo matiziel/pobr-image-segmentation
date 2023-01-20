@@ -11,18 +11,17 @@
 
 class Converter {
 public:
-    static cv::Mat ConvertHLSToBGR(const cv::Mat& image) {
+    static cv::Mat ConvertHLSToBGR(const cv::Mat &image) {
         cv::Mat result;
         cv::cvtColor(image, result, cv::COLOR_HLS2BGR);
         return result;
     }
 
-    static cv::Mat ConvertBGRToHLS(const cv::Mat& image) {
+    static cv::Mat ConvertBGRToHLS(const cv::Mat &image) {
         cv::Mat result;
         cv::cvtColor(image, result, cv::COLOR_BGR2HLS);
         return result;
     }
 };
-
 
 #endif //POBR_IMAGE_SEGMENTATION_CONVERTER_H

@@ -26,15 +26,19 @@ public:
         this->yMax = yMax;
     }
 
-    cv::Mat GetBoundingImage(cv::Mat &image) {
+    cv::Mat GetBoundingImage(cv::Mat &image) const {
         return image(cv::Rect(xMin, yMin, GetWidth(), GetHeight()));
     }
 
-    int GetWidth() {
+    cv::Point2i GetCenterPoint() const {
+        return cv::Point2i((xMax + xMin) / 2, (yMax + yMin) / 2);
+    }
+
+    int GetWidth() const {
         return xMax - xMin;
     }
 
-    int GetHeight() {
+    int GetHeight() const {
         return yMax - yMin;
     }
 

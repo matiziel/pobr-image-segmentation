@@ -38,6 +38,17 @@ void ImageProcessor::Thresholding(cv::Mat &image) {
     image = imageVector;
 }
 
+void ImageProcessor::DrawBoundingBoxes(cv::Mat &image, const std::vector<Segment> segments) {
+    std::for_each(
+            segments.cbegin(),
+            segments.cend(),
+            [&](const Segment &segment) {
+                BoundingBox::DrawBoundingBox(image, ColourHLS::GetRed(), segment.GetBoundingBox());
+            });
+}
+
 void ImageProcessor::SaveProcessedImage(const std::string &fileName, const cv::Mat &image) {
     cv::imwrite(outputDirectory + fileName, image);
 }
+
+
