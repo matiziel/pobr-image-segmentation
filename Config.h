@@ -7,7 +7,6 @@
 
 class Config {
 public:
-
     struct LetterConfig {
         double M1Min, M1Max;
         double M2Min, M2Max;
@@ -17,20 +16,29 @@ public:
 
         static LetterConfig GetLetterLConfig() {
             return LetterConfig(
-                    0.2298, 0.2794,
-                    0.0, 0.0205,
+                    0.2298, 0.29154,
+                    0.0, 0.02174,
                     0.0, 0.0,
                     0.0, 0.0,
-                    0.012, 0.0145);
+                    0.0119, 0.015814);
         }
 
         static LetterConfig GetLetterIConfig() {
             return LetterConfig(
-                    0.17205, 0.1896,
+                    0.17094, 0.1896,
                     0.00018, 0.00438,
                     0.0, 0.0,
                     0.0, 0.0,
                     0.006307, 0.00895);
+        }
+
+        static LetterConfig GetLetterDOTConfig() {
+            return LetterConfig(
+                    0.1594, 0.1889,
+                    0.0, 0.010358,
+                    0.0, 0.0,
+                    0.0, 0.0,
+                    0.006307, 0.006381);
         }
 
         static LetterConfig GetLetterDConfig() {
@@ -42,7 +50,7 @@ public:
                     0.008785, 0.010669);
         }
 
-        static LetterConfig  GetWordLIConfig() {
+        static LetterConfig GetWordLIConfig() {
             return LetterConfig(
                     0.4479, 0.44791,
                     0.11717, 0.11718,
@@ -51,7 +59,7 @@ public:
                     0.020861, 0.020862);
         }
 
-        static LetterConfig  GetWordIDConfig() {
+        static LetterConfig GetWordIDConfig() {
             return LetterConfig(
                     0.33787, 0.33788,
                     0.065157, 0.065158,
@@ -60,13 +68,22 @@ public:
                     0.012250, 0.012251);
         }
 
-        static LetterConfig  GetWordLIDConfig() {
+        static LetterConfig GetWordLIDConfig() {
             return LetterConfig(
-                    0.33937, 0.33938,
-                    0.047823, 0.0478234,
+                    0.33937, 0.33988,
+                    0.047814, 0.0478234,
                     0.0, 0.0,
                     0.0, 0.0,
-                    0.016837, 0.016838);
+                    0.016837, 0.016926);
+        }
+
+        static LetterConfig GetWordLIDLConfig() {
+            return LetterConfig(
+                    0.38567, 0.6995,
+                    0.069017, 0.40903,
+                    0.0, 9.93957e+08,
+                    0.0, 1.11406e+08,
+                    0.016015, 0.02427);
         }
 
         LetterConfig(const LetterConfig &config) {
@@ -96,16 +113,20 @@ public:
             L(LetterConfig::GetLetterLConfig()),
             I(LetterConfig::GetLetterIConfig()),
             D(LetterConfig::GetLetterDConfig()),
+            DOT(LetterConfig::GetLetterDOTConfig()),
             LI(LetterConfig::GetWordLIConfig()),
-            ID(LetterConfig::GetWordLIConfig()),
-            LID(LetterConfig::GetWordLIDConfig()) { }
+            ID(LetterConfig::GetWordIDConfig()),
+            LID(LetterConfig::GetWordLIDConfig()),
+            LIDL(LetterConfig::GetWordLIDLConfig()) {}
 
     const LetterConfig L;
     const LetterConfig I;
+    const LetterConfig DOT;
     const LetterConfig D;
     const LetterConfig LI;
     const LetterConfig ID;
     const LetterConfig LID;
+    const LetterConfig LIDL;
 
 };
 

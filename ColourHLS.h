@@ -23,13 +23,6 @@ public:
         S = s;
     }
 
-    static int MaxH() { return 180; }
-
-    static int MaxL() { return 255; }
-
-    static int MaxS() { return 255; }
-
-
     static ColourHLS GetBlack() { return ColourHLS(0, 0, 0); }
 
     static ColourHLS GetWhite() { return ColourHLS(180, 255, 255); }
